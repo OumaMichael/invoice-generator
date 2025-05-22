@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -37,9 +37,9 @@ class InvoiceModal extends React.Component {
           <div id="invoiceCapture">
             <div className="d-flex flex-row justify-content-between align-items-start bg-light w-100 p-4">
               <div className="w-100">
-                <h4 className="fw-bold my-2">{this.props.info.billFrom||'John Uberbacher'}</h4>
+                <h4 className="fw-bold my-2">{this.props.info.billFrom || 'John Uberbacher'}</h4>
                 <h6 className="fw-bold text-secondary mb-1">
-                  Invoice #: {this.props.info.invoiceNumber||''}
+                  Invoice #: {this.props.info.invoiceNumber || ''}
                 </h6>
               </div>
               <div className="text-end ms-4">
@@ -51,19 +51,19 @@ class InvoiceModal extends React.Component {
               <Row className="mb-4">
                 <Col md={4}>
                   <div className="fw-bold">Billed to:</div>
-                  <div>{this.props.info.billTo||''}</div>
-                  <div>{this.props.info.billToAddress||''}</div>
-                  <div>{this.props.info.billToEmail||''}</div>
+                  <div>{this.props.info.billTo || ''}</div>
+                  <div>{this.props.info.billToAddress || ''}</div>
+                  <div>{this.props.info.billToEmail || ''}</div>
                 </Col>
                 <Col md={4}>
                   <div className="fw-bold">Billed From:</div>
-                  <div>{this.props.info.billFrom||''}</div>
-                  <div>{this.props.info.billFromAddress||''}</div>
-                  <div>{this.props.info.billFromEmail||''}</div>
+                  <div>{this.props.info.billFrom || ''}</div>
+                  <div>{this.props.info.billFromAddress || ''}</div>
+                  <div>{this.props.info.billFromEmail || ''}</div>
                 </Col>
                 <Col md={4}>
                   <div className="fw-bold mt-2">Date Of Issue:</div>
-                  <div>{this.props.info.dateOfIssue||''}</div>
+                  <div>{this.props.info.dateOfIssue || ''}</div>
                 </Col>
               </Row>
               <Table className="mb-0">
@@ -125,10 +125,20 @@ class InvoiceModal extends React.Component {
                   </tr>
                 </tbody>
               </Table>
+
+              {/* ✅ Transaction Code Section */}
+              {this.props.info.transactionCode &&
+                <div className="bg-light py-2 px-4 rounded my-3">
+                  <strong>Transaction Code:</strong> {this.props.info.transactionCode}
+                </div>
+              }
+
+              {/* ✅ Notes Section */}
               {this.props.info.notes &&
                 <div className="bg-light py-3 px-4 rounded">
                   {this.props.info.notes}
-                </div>}
+                </div>
+              }
             </div>
           </div>
           <div className="pb-4 px-4">

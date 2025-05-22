@@ -17,6 +17,7 @@ class InvoiceForm extends React.Component {
       currency: 'Ksh',
       currentDate: '',
       invoiceNumber: 1,
+      transactionCode: '',
       dateOfIssue: '',
       billTo: '',
       billToEmail: '',
@@ -148,6 +149,19 @@ class InvoiceForm extends React.Component {
             }} required="required"/>
           </div>
         </div>
+        <div className="d-flex flex-row align-items-center mt-2">
+  <span className="fw-bold me-2">Transaction Code:&nbsp;</span>
+  <Form.Control
+    type="text"
+    name="transactionCode"
+    value={this.state.transactionCode}
+    onChange={this.editField}
+    placeholder="e.g., BANKCODE123456"
+    style={{ maxWidth: '200px' }}
+    required
+  />
+</div>
+
         <hr className="my-4"/>
         <Row className="mb-5">
           <Col>
@@ -199,8 +213,8 @@ class InvoiceForm extends React.Component {
           </Col>
         </Row>
         <hr className="my-4"/>
-        <Form.Label className="fw-bold">Notes:</Form.Label>
-        <Form.Control placeholder="Thanks for your business!" name="notes" value={this.state.notes} onChange={(event) => this.editField(event)} as="textarea" className="my-2" rows={1}/>
+        <Form.Label className="fw-bold">Payment Method:</Form.Label>
+        <Form.Control placeholder="Payment Method" name="notes" value={this.state.notes} onChange={(event) => this.editField(event)} as="textarea" className="my-2" rows={1}/>
         </Card>
       </Col>
       <Col md={4} lg={3}>
