@@ -44,14 +44,19 @@ class InvoiceForm extends React.Component {
     ];
     this.editField = this.editField.bind(this);
   }
+  
   componentDidMount(prevProps) {
     this.handleCalculateTotal()
   }
+  
   handleRowDel(items) {
     var index = this.state.items.indexOf(items);
     this.state.items.splice(index, 1);
-    this.setState(this.state.items);
+    this.setState({items: this.state.items}, () => {
+      this.handleCalculateTotal();
+    });
   };
+  
   handleAddEvent(evt) {
     var id = (+ new Date() + Math.floor(Math.random() * 999999)).toString(36);
     var items = {
@@ -62,33 +67,49 @@ class InvoiceForm extends React.Component {
       quantity: 1
     }
     this.state.items.push(items);
-    this.setState(this.state.items);
+    this.setState({items: this.state.items}, () => {
+      this.handleCalculateTotal();
+    });
   }
+  
   handleCalculateTotal() {
     var items = this.state.items;
     var subTotal = 0;
 
-    items.map(function(items) {
-      subTotal = parseFloat(subTotal + (parseFloat(items.price).toFixed(2) * parseInt(items.quantity))).toFixed(2)
+    // Fixed calculation - properly sum all items
+    items.forEach(function(item) {
+      var itemPrice = parseFloat(item.price) || 0;
+      var itemQuantity = parseInt(item.quantity) || 0;
+      subTotal += itemPrice * itemQuantity;
     });
 
+    // Round to 2 decimal places
+    subTotal = parseFloat(subTotal.toFixed(2));
+
     this.setState({
-      subTotal: parseFloat(subTotal).toFixed(2)
+      subTotal: subTotal.toFixed(2)
     }, () => {
+      var taxRate = parseFloat(this.state.taxRate) || 0;
+      var discountRate = parseFloat(this.state.discountRate) || 0;
+      
+      var taxAmount = parseFloat((subTotal * (taxRate / 100)).toFixed(2));
+      var discountAmount = parseFloat((subTotal * (discountRate / 100)).toFixed(2));
+      
       this.setState({
-        taxAmmount: parseFloat(parseFloat(subTotal) * (this.state.taxRate / 100)).toFixed(2)
+        taxAmmount: taxAmount.toFixed(2)
       }, () => {
         this.setState({
-          discountAmmount: parseFloat(parseFloat(subTotal) * (this.state.discountRate / 100)).toFixed(2)
+          discountAmmount: discountAmount.toFixed(2)
         }, () => {
+          var total = (subTotal - discountAmount) + taxAmount;
           this.setState({
-            total: ((subTotal - this.state.discountAmmount) + parseFloat(this.state.taxAmmount))
+            total: total.toFixed(2)
           });
         });
       });
     });
-
   };
+  
   onItemizedItemEdit(evt) {
     var item = {
       id: evt.target.id,
@@ -104,24 +125,31 @@ class InvoiceForm extends React.Component {
       }
       return items;
     });
-    this.setState({items: newItems});
-    this.handleCalculateTotal();
+    this.setState({items: newItems}, () => {
+      this.handleCalculateTotal();
+    });
   };
+  
   editField = (event) => {
     this.setState({
       [event.target.name]: event.target.value
+    }, () => {
+      this.handleCalculateTotal();
     });
-    this.handleCalculateTotal();
   };
+  
   onCurrencyChange = (selectedOption) => {
     this.setState(selectedOption);
   };
+  
   openModal = (event) => {
     event.preventDefault()
     this.handleCalculateTotal()
     this.setState({isOpen: true})
   };
+  
   closeModal = (event) => this.setState({isOpen: false});
+  
   render() {
     return (<Form onSubmit={this.openModal}>
       <Row>
