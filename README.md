@@ -20,7 +20,7 @@ A simple React application to generate and manage invoices.
 ### Installation
 
 ```bash
-git clone https://github.com/yourusername/invoice_generator.git
+git clone https://github.com/OumaMichael/invoice_generator
 cd invoice_generator
 npm install
 ```
